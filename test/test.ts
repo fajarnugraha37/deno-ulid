@@ -5,8 +5,14 @@ import {
   assertStrictEquals,
   assertThrows,
 } from "@std/assert";
-import { ulid, incrementBase32, detectPrng, randomChar, monotonicFactory } from "../mod.ts";
-import { encodeTime, encodeRandom, decodeTime } from "../lib/encode-decode.ts";
+import {
+  detectPrng,
+  incrementBase32,
+  monotonicFactory,
+  randomChar,
+  ulid,
+} from "../mod.ts";
+import { decodeTime, encodeRandom, encodeTime } from "../lib/encode-decode.ts";
 
 Deno.test("ulid", async (t) => {
   await t.step("prng", async (t) => {

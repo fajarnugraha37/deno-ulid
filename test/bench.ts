@@ -1,4 +1,4 @@
-import { encodeTime, decodeTime, encodeRandom } from "../lib/encode-decode.ts";
+import { decodeTime, encodeRandom, encodeTime } from "../lib/encode-decode.ts";
 import { detectPrng, ulid, ulidToUUID, uuidToULID } from "../mod.ts";
 
 const prng = detectPrng();
