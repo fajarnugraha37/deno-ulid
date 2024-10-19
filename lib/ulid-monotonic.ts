@@ -53,4 +53,4 @@ export function monotonicFactory(prng: PRNG = detectPrng()): ULID {
  * @param seedTime The time to base the ULID on, in milliseconds since the Unix epoch. Defaults to `Date.now()`.
  * @returns A ULID that is guaranteed to be strictly increasing for the same seed time.
  */
-export const monotonicUlid = monotonicFactory();
+export const monotonicUlid: ULID = monotonicFactory();
