@@ -1,7 +1,7 @@
 export interface PRNG {
-    (): number;
+  (): number;
 }
 
 export interface ULID {
-    (seedTime?: number): string;
+  (seedTime?: number): string;
 }
