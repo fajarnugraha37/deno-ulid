@@ -1,68 +1,21 @@
 import type { PRNG, ULID } from "../types/index.d.ts";
 import { GLOBAL } from "./const.ts";
-import { incrementBase32, randomChar } from "./util.ts";
-import { crockford } from "./crockford.ts";
+import { encodeRandom, encodeTime } from "./encode-decode.ts";
+import { detectPrng } from "./util.ts";
 
-export function encodeTime(now: number, len: number = GLOBAL.TIME_LEN): string {
-  if (now > GLOBAL.TIME_MAX) {
-    throw new Deno.errors.InvalidData(
-      "cannot encode time greater than " + GLOBAL.TIME_MAX,
-    );
-  }
-  if (now < 0) {
-    throw new Deno.errors.InvalidData("time must be positive");
-  }
-  if (Number.isInteger(now) === false) {
-    throw new Deno.errors.InvalidData("time must be an integer");
-  }
-  let str = "";
-  for (; len > 0; len--) {
-    const mod = now % GLOBAL.ENCODING_LEN;
-    str = GLOBAL.ENCODING[mod] + str;
-    now = (now - mod) / GLOBAL.ENCODING_LEN;
-  }
-
-  return str;
-}
-
-export function decodeTime(id: string): number {
-  if (id.length !== GLOBAL.TIME_LEN + GLOBAL.RANDOM_LEN) {
-    throw new Deno.errors.InvalidData("malformed ulid");
-  }
-  const time = id
-    .substring(0, GLOBAL.TIME_LEN)
-    .split("")
-    .reverse()
-    .reduce((carry, char, index) => {
-      const encodingIndex = GLOBAL.ENCODING.indexOf(char);
-      if (encodingIndex === -1) {
-        throw new Deno.errors.InvalidData("invalid character found: " + char);
-      }
-      return (carry += encodingIndex * Math.pow(GLOBAL.ENCODING_LEN, index));
-    }, 0);
-  if (time > GLOBAL.TIME_MAX) {
-    throw new Deno.errors.InvalidData("malformed ulid, timestamp too large");
-  }
-
-  return time;
-}
-
-export function encodeRandom(len: number, prng: PRNG): string {
-  let str = "";
-  for (; len > 0; len--) {
-    str = randomChar(prng) + str;
-  }
-  return str;
-}
-
-export function detectPrng(): PRNG {
-  return () => {
-    const buffer = new Uint8Array(1);
-    crypto.getRandomValues(buffer);
-    return buffer[0] / 0xff;
-  };
-}
-
+/**
+ * Fixes a base32 ULID string by replacing invalid characters with their correct counterparts.
+ *
+ * This function replaces the following characters:
+ * - 'i' -> '1'
+ * - 'l' -> '1'
+ * - 'o' -> '0'
+ * - '-' (hyphen) -> '' (empty string)
+ *
+ * @param {string} id The ULID string to fix.
+ * @returns {string} The fixed ULID string.
+ * @throws {TypeError} If the provided id is not a string.
+ */
 export function fixULIDBase32(id: string): string {
   return id.replace(/i/gi, "1")
     .replace(/l/gi, "1")
@@ -70,6 +23,17 @@ export function fixULIDBase32(id: string): string {
     .replace(/-/g, "");
 }
 
+/**
+ * Validates a ULID string based on its format and character set.
+ *
+ * This function checks if the provided string:
+ * - is a string type
+ * - has the correct length (TIME_LEN + RANDOM_LEN)
+ * - contains only characters from the defined encoding (all characters are uppercase)
+ *
+ * @param {string} id The ULID string to validate.
+ * @returns {boolean} True if the string is a valid ULID, false otherwise.
+ */
 export function isValid(id: string): boolean {
   return (
     typeof id === "string" &&
@@ -81,6 +45,16 @@ export function isValid(id: string): boolean {
   );
 }
 
+/**
+ * Creates a ULID generation factory function.
+ *
+ * This factory function takes an optional PRNG (Pseudorandom Number Generator) and returns a function for generating ULIDs.
+ *
+ * The default PRNG is chosen by the `detectPrng` function.
+ *
+ * @param {PRNG} [prng=detectPrng()] - The PRNG to use for generating random parts of the ULID.
+ * @returns {ULID} A function that generates ULIDs.
+ */
 export function factory(prng: PRNG = detectPrng()): ULID {
   return function ulid(seedTime: number = Date.now()): string {
     return encodeTime(seedTime, GLOBAL.TIME_LEN) +
@@ -88,57 +62,29 @@ export function factory(prng: PRNG = detectPrng()): ULID {
   };
 }
 
-export function monotonicFactory(prng: PRNG = detectPrng()): ULID {
-  let lastTime = 0;
-  let lastRandom: string;
-  return function ulid(seedTime: number = Date.now()): string {
-    if (seedTime <= lastTime) {
-      const incrementedRandom = (lastRandom = incrementBase32(lastRandom));
-      return encodeTime(lastTime, GLOBAL.TIME_LEN) + incrementedRandom;
-    }
-    lastTime = seedTime;
-    const newRandom = (lastRandom = encodeRandom(GLOBAL.RANDOM_LEN, prng));
-    return encodeTime(seedTime, GLOBAL.TIME_LEN) + newRandom;
-  };
-}
-
+/**
+ * Generate a ULID, optionally based on a given timestamp. If the timestamp is
+ * not passed, it will default to `Date.now()`.
+ *
+ * Multiple calls to this function with the same seed time will not guarantee
+ * that the ULIDs will be strictly increasing, even if the seed time is the
+ * same. For that, use the {@linkcode monotonicUlid} function.
+ *
+ * @example Generate a ULID
+ * ```ts no-assert
+ * import { ulid } from "@std/ulid";
+ *
+ * ulid(); // 01HYFKMDF3HVJ4J3JZW8KXPVTY
+ * ```
+ *
+ * @example Generate a ULID with a seed time
+ * ```ts no-assert
+ * import { ulid } from "@std/ulid";
+ *
+ * ulid(150000); // 0000004JFG3EKDRE04TVVDJW7K
+ * ```
+ *
+ * @param seedTime The time to base the ULID on, in milliseconds since the Unix epoch. Defaults to `Date.now()`.
+ * @returns A ULID.
+ */
 export const ulid: ULID = factory();
-
-export function ulidToUUID(ulid: string): string {
-  const isValid = GLOBAL.ULID_REGEX.test(ulid);
-  if (!isValid) {
-    throw new Deno.errors.InvalidData("Invalid ULID");
-  }
-
-  const uint8Array = crockford.decode(ulid);
-  const uuid = Array.from(uint8Array)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
-
-  return (
-    uuid.substring(0, 8) +
-    "-" +
-    uuid.substring(8, 12) +
-    "-" +
-    uuid.substring(12, 16) +
-    "-" +
-    uuid.substring(16, 20) +
-    "-" +
-    uuid.substring(20)
-  );
-}
-
-export function uuidToULID(uuid: string): string {
-  const isValid = GLOBAL.UUID_REGEX.test(uuid);
-  if (!isValid) {
-    throw new Deno.errors.InvalidData("Invalid UUID");
-  }
-  const clean = uuid.replace(/-/g, "")
-    .match(/.{1,2}/g);
-  if (!clean) {
-    throw new Deno.errors.InvalidData("Invalid UUID");
-  }
-  const uint8Array = new Uint8Array(clean.map((byte) => parseInt(byte, 16)));
-
-  return crockford.encode(uint8Array);
-}
