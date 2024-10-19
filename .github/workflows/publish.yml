@@ -40,7 +40,7 @@ jobs:
         run: deno task cov
 
       - name: Run benchmark
-        run: deno task benchmark
+        run: deno bench
 
       - name: Publish package
         run: deno publish
