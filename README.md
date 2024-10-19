@@ -1,5 +1,9 @@
 # Deno-ULID
 
+[![JSR Scope](https://jsr.io/badges/@fajar)](https://jsr.io/@fajar)
+[![JSR](https://jsr.io/badges/@fajar/deno-ulid)](https://jsr.io/@fajar/deno-ulid)
+[![JSR Score](https://jsr.io/badges/@fajar/deno-ulid/score)](https://jsr.io/@fajar/deno-ulid)
+
 ULID generator for Deno. ULID is an alternative to UUID but lexicographically
 sortable, monotonic sort order and URL safe.
 
