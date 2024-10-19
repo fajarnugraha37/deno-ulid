@@ -42,3 +42,9 @@ jobs:
 
       - name: Run benchmark
         run: deno task benchmark
+
+      - name: Run Test Publish
+        run: deno publish --dry-run --check=all --allow-dirty
+        
+      - name: Run Publish package
+        run: deno publish
