@@ -99,7 +99,7 @@ export function monotonicFactory(prng: PRNG = detectPrng()): ULID {
     };
 }
 
-export const ulid = factory();
+export const ulid: ULID = factory();
 
 export function ulidToUUID(ulid: string): string {
     const isValid = GLOBAL.ULID_REGEX.test(ulid);

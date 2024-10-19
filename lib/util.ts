@@ -1,7 +1,7 @@
 import type { PRNG } from "../types/index.d.ts";
 import { GLOBAL } from "./const.ts";
 
-export function replaceCharAt(str: string, index: number, char: string) {
+export function replaceCharAt(str: string, index: number, char: string): string {
     return str.substring(0, index) + char + str.substring(index + 1);
 }
 
