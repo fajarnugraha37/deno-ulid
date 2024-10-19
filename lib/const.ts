@@ -1,0 +1,24 @@
+const ENCODING = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // Crockford's Base32
+const ENCODING_LEN = ENCODING.length;
+const TIME_MAX = Math.pow(2, 48) - 1;
+const TIME_LEN = 10;
+const RANDOM_LEN = 16;
+const B32_CHARACTERS = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const MAX_ULID = "7ZZZZZZZZZZZZZZZZZZZZZZZZZ";
+const MIN_ULID = "00000000000000000000000000";
+const ULID_REGEX = /^[0-7][0-9a-hjkmnp-tv-zA-HJKMNP-TV-Z]{25}$/;
+const UUID_REGEX = /^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/;
+
+
+export const GLOBAL = {
+    ENCODING,
+    ENCODING_LEN,
+    TIME_MAX,
+    TIME_LEN,
+    RANDOM_LEN,
+    B32_CHARACTERS,
+    MAX_ULID,
+    MIN_ULID,
+    ULID_REGEX,
+    UUID_REGEX,
+}
