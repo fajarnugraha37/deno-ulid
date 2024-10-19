@@ -1,6 +1,6 @@
 {
   "name": "@fajar/deno-ulid",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "exports": "./mod.ts",
   "tasks": {
     "pub:local": "deno publish --no-provenance",
