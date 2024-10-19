@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "exports": "./mod.ts",
   "tasks": {
+    "benchmark": "deno bench > benchmark.txt",
+    "cov": "deno test --coverage=cov && deno coverage --lcov cov > cov/lcov.info",
+    "cov:html": "deno task cov && genhtml cov/lcov.info -o cov/html && open cov/html/index.html"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.6",
