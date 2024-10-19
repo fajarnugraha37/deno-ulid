@@ -1,28 +1,29 @@
-import * as ulid from "../mod.ts";
+import { encodeTime, decodeTime, encodeRandom } from "../lib/encode-decode.ts";
+import { detectPrng, ulid, ulidToUUID, uuidToULID } from "../mod.ts";
 
-const prng = ulid.detectPrng();
-const uliddValue = ulid.ulid();
+const prng = detectPrng();
+const uliddValue = ulid();
 
 Deno.bench("encodeTime", function () {
-  ulid.encodeTime(1469918176385);
+  encodeTime(1469918176385);
 });
 
 Deno.bench("decodeTime", function () {
-  ulid.decodeTime(uliddValue);
+  decodeTime(uliddValue);
 });
 
 Deno.bench("encodeRandom", function () {
-  ulid.encodeRandom(10, prng);
+  encodeRandom(10, prng);
 });
 
 Deno.bench("generate", function () {
-  ulid.ulid(1469918176385);
+  ulid(1469918176385);
 });
 
 Deno.bench("ulidToUUID", function () {
-  ulid.ulidToUUID(uliddValue);
+  ulidToUUID(uliddValue);
 });
 
 Deno.bench("uuidToULID", function () {
-  ulid.uuidToULID(crypto.randomUUID());
+  uuidToULID(crypto.randomUUID());
 });
