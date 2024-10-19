@@ -3,15 +3,12 @@
   "version": "0.1.0",
   "exports": "./mod.ts",
   "tasks": {
-    "bench": "deno bench --json ./test/bench.ts",
-    "cov": "deno test --coverage=cov && deno coverage --lcov cov > cov/lcov.info",
+    "cov": "deno test --coverage=cov && deno coverage --lcov cov",
     "cov:html": "deno task cov && genhtml cov/lcov.info -o cov/html && open cov/html/index.html"
   },
   "imports": {
-    "@lib": "./lib/index.ts",
     "@std/assert": "jsr:@std/assert@1",
-    "@std/testing": "jsr:@std/testing@^1.0.3",
-    "@types": "./types/index.d.ts"
+    "@std/testing": "jsr:@std/testing@^1.0.3"
   },
   "compilerOptions": {
     "types": [

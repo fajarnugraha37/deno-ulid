@@ -1,4 +1,4 @@
-import type { PRNG, ULID } from "@types";
+import type { PRNG, ULID } from "../types/index.d.ts";
 import { GLOBAL } from "./const.ts";
 import { incrementBase32, randomChar } from "./util.ts";
 import { crockford } from "./crockford.ts";

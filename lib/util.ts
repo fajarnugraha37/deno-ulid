@@ -1,4 +1,4 @@
-import type { PRNG } from "@types";
+import type { PRNG } from "../types/index.d.ts";
 import { GLOBAL } from "./const.ts";
 
 export function replaceCharAt(str: string, index: number, char: string) {

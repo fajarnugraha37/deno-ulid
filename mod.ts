@@ -1,2 +1,2 @@
-export * from '@lib';
-export type * from '@types';
+export * from './lib/index.ts';
+export type * from './types/index.d.ts';
