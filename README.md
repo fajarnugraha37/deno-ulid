@@ -1,11 +1,15 @@
-# Deno-ULID
+# Deno ULID Generator
 
 [![JSR Scope](https://jsr.io/badges/@fajar)](https://jsr.io/@fajar)
 [![JSR](https://jsr.io/badges/@fajar/deno-ulid)](https://jsr.io/@fajar/deno-ulid)
 [![JSR Score](https://jsr.io/badges/@fajar/deno-ulid/score)](https://jsr.io/@fajar/deno-ulid)
 
-ULID generator for Deno. ULID is an alternative to UUID but lexicographically
-sortable, monotonic sort order and URL safe.
+This package provides a fast, lightweight, zero dependencies, no slow types are
+used, fully type-safe and supporting multiple runtimes for generating ULIDs
+(Universally Unique Lexicographically Sortable Identifiers). ULIDs offer a
+lexicographically sortable (combine timestamps with a series of random
+characters in a lexicographically sortable manner), universally unique,
+efficient, monotonic sort order and URL safe alternative to UUIDs.
 
 ## Import
 
