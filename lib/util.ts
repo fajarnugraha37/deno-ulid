@@ -39,3 +39,11 @@ export function randomChar(prng: PRNG): string {
 
   return GLOBAL.ENCODING.charAt(rand);
 }
+
+export function detectPrng(): PRNG {
+  return () => {
+    const buffer = new Uint8Array(1);
+    crypto.getRandomValues(buffer);
+    return buffer[0] / 0xff;
+  };
+}
