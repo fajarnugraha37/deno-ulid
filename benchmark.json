@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "runtime": "Deno/2.0.0 x86_64-pc-windows-msvc",
+  "cpu": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz",
+  "benches": [
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "encodeTime",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 185,
+            "min": 195.07,
+            "max": 513.8,
+            "avg": 286.749027027027,
+            "p75": 308.21,
+            "p99": 473.43,
+            "p995": 513.8,
+            "p999": 513.8,
+            "highPrecision": false,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    },
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "decodeTime",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 80,
+            "min": 547.6,
+            "max": 1125.95,
+            "avg": 719.8172499999998,
+            "p75": 760.28,
+            "p99": 1125.95,
+            "p995": 1125.95,
+            "p999": 1125.95,
+            "highPrecision": false,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    },
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "encodeRandom",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 21,
+            "min": 3926.58,
+            "max": 11358.26,
+            "avg": 5241.995714285713,
+            "p75": 5366.23,
+            "p99": 11358.26,
+            "p995": 11358.26,
+            "p999": 11358.26,
+            "highPrecision": false,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    },
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "generate",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 60487,
+            "min": 4100.0,
+            "max": 520400.0,
+            "avg": 8269.0,
+            "p75": 6900.0,
+            "p99": 49800.0,
+            "p995": 64700.0,
+            "p999": 148900.0,
+            "highPrecision": true,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    },
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "ulidToUUID",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 22,
+            "min": 3791.12,
+            "max": 5612.98,
+            "avg": 4353.0995454545455,
+            "p75": 4653.35,
+            "p99": 5612.98,
+            "p995": 5612.98,
+            "p999": 5612.98,
+            "highPrecision": false,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    },
+    {
+      "origin": "file:///C:/Users/fajar.nugraha/Desktop/workspace/compose/deno-ulid/test/bench.ts",
+      "group": null,
+      "name": "uuidToULID",
+      "baseline": false,
+      "results": [
+        {
+          "ok": {
+            "n": 18,
+            "min": 5934.42,
+            "max": 7889.71,
+            "avg": 6472.838333333334,
+            "p75": 6607.61,
+            "p99": 7889.71,
+            "p995": 7889.71,
+            "p999": 7889.71,
+            "highPrecision": false,
+            "usedExplicitTimers": false
+          }
+        }
+      ]
+    }
+  ]
+}
