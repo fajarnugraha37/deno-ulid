@@ -3,6 +3,19 @@ import { GLOBAL } from "./const.ts";
 import { encodeRandom, encodeTime } from "./encode-decode.ts";
 import { detectPrng } from "./util.ts";
 
+/**
+ * Fixes a base32 ULID string by replacing invalid characters with their correct counterparts.
+ *
+ * This function replaces the following characters:
+ * - 'i' -> '1'
+ * - 'l' -> '1'
+ * - 'o' -> '0'
+ * - '-' (hyphen) -> '' (empty string)
+ *
+ * @param {string} id The ULID string to fix.
+ * @returns {string} The fixed ULID string.
+ * @throws {TypeError} If the provided id is not a string.
+ */
 export function fixULIDBase32(id: string): string {
   return id.replace(/i/gi, "1")
     .replace(/l/gi, "1")
@@ -10,6 +23,17 @@ export function fixULIDBase32(id: string): string {
     .replace(/-/g, "");
 }
 
+/**
+ * Validates a ULID string based on its format and character set.
+ *
+ * This function checks if the provided string:
+ * - is a string type
+ * - has the correct length (TIME_LEN + RANDOM_LEN)
+ * - contains only characters from the defined encoding (all characters are uppercase)
+ *
+ * @param {string} id The ULID string to validate.
+ * @returns {boolean} True if the string is a valid ULID, false otherwise.
+ */
 export function isValid(id: string): boolean {
   return (
     typeof id === "string" &&
@@ -21,6 +45,16 @@ export function isValid(id: string): boolean {
   );
 }
 
+/**
+ * Creates a ULID generation factory function.
+ *
+ * This factory function takes an optional PRNG (Pseudorandom Number Generator) and returns a function for generating ULIDs.
+ *
+ * The default PRNG is chosen by the `detectPrng` function.
+ *
+ * @param {PRNG} [prng=detectPrng()] - The PRNG to use for generating random parts of the ULID.
+ * @returns {ULID} A function that generates ULIDs.
+ */
 export function factory(prng: PRNG = detectPrng()): ULID {
   return function ulid(seedTime: number = Date.now()): string {
     return encodeTime(seedTime, GLOBAL.TIME_LEN) +

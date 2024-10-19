@@ -3,6 +3,18 @@ import { GLOBAL } from "./const.ts";
 import { encodeRandom, encodeTime } from "./encode-decode.ts";
 import { detectPrng, incrementBase32 } from "./util.ts";
 
+/**
+ * Creates a ULID generation factory function that ensures monotonic generation.
+ *
+ * This factory function generates ULIDs where the timestamp is always increasing or remains the same,
+ * and the random part is incremented only if the timestamp doesn't change. This ensures lexicographic sorting
+ * based on the ULID string.
+ *
+ * The default PRNG is chosen by the `detectPrng` function.
+ *
+ * @param {PRNG} [prng=detectPrng()] - The PRNG to use for generating random parts of the ULID.
+ * @returns {ULID} A function that generates monotonic ULIDs.
+ */
 export function monotonicFactory(prng: PRNG = detectPrng()): ULID {
   let lastTime = 0;
   let lastRandom: string;

@@ -2,6 +2,21 @@ import type { PRNG } from "../types/index.d.ts";
 import { GLOBAL } from "./const.ts";
 import { randomChar } from "./util.ts";
 
+/**
+ * Extracts the timestamp given a valid ULID.
+ *
+ * @example encode the time to ULID
+ * ```ts
+ * import { encodeTime } from "@std/ulid";
+ * import { assertEquals } from "@std/assert";
+ *
+ * assertEquals("01ARYZ6S41", encodeTime(1469918176385, 10));
+ * ```
+ *
+ * @param now The number of milliseconds since the Unix epoch.
+ * @param len length of the generated string.
+ * @returns The ULID to extract the timestamp from.
+ */
 export function encodeTime(now: number, len: number = GLOBAL.TIME_LEN): string {
   if (now > GLOBAL.TIME_MAX) {
     throw new Deno.errors.InvalidData(
@@ -64,6 +79,16 @@ export function decodeTime(id: string): number {
   return time;
 }
 
+/**
+ * Encodes a random string of specified length using the provided PRNG.
+ *
+ * This function iterates for the specified length, calling the `randomChar` function with the PRNG
+ * to generate a random character and prepend it to the string being built.
+ *
+ * @param {number} len - The desired length of the random string.
+ * @param {PRNG} prng - The PRNG to use for generating random characters.
+ * @returns {string} A random string of the specified length.
+ */
 export function encodeRandom(len: number, prng: PRNG): string {
   let str = "";
   for (; len > 0; len--) {
