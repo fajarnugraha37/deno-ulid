@@ -90,3 +90,74 @@ generate                7.4 µs       136,000 (  6.3 µs …   8.3 µs)   7.7 µ
 ulidToUUID              3.9 µs       257,900 (  3.5 µs …   4.6 µs)   4.0 µs   4.6 µs   4.6 µs
 uuidToULID              6.4 µs       157,000 (  5.9 µs …   8.0 µs)   6.5 µs   8.0 µs   8.0 µs
 ```
+
+## Test
+
+```bash
+$ deno test
+```
+
+```bash
+running 1 test from ./test/test.ts
+ulid ...
+  prng ...
+    should produce a number ... ok (1ms)
+    should be between 0 and 1 ... ok (1ms)
+  prng ... ok (4ms)
+  incremenet base32 ...
+    increments correctly ... ok (0ms)
+    carries correctly ... ok (0ms)
+    double increments correctly ... ok (0ms)
+    throws when it cannot increment ... ok (0ms)
+  incremenet base32 ... ok (2ms)
+  randomChar ...
+    should never return undefined ... ok (0ms)
+    should never return an empty string ... ok (0ms)
+  randomChar ... ok (153ms)
+  encodeTime ...
+    should return expected encoded result ... ok (0ms)
+    should change length properly ... ok (0ms)
+    should truncate time if not enough length ... ok (0ms)
+    should throw an error ...
+      if time greater than (2 ^ 48) - 1 ... ok (0ms)
+      if time is not a number ... ok (0ms)
+      if time is infinity ... ok (0ms)
+      if time is negative ... ok (1ms)
+      if time is a float ... ok (0ms)
+    should throw an error ... ok (3ms)
+  encodeTime ... ok (8ms)
+  encodeRandom ...
+    should return correct length ... ok (0ms)
+  encodeRandom ... ok (0ms)
+  decodeTime ...
+    should return correct timestamp ... ok (0ms)
+    should accept the maximum allowed timestamp ... ok (0ms)
+    should reject ...
+      malformed strings of incorrect length ... ok (0ms)
+      strings with timestamps that are too high ... ok (0ms)
+      invalid character ... ok (0ms)
+    should reject ... ok (1ms)
+  decodeTime ... ok (1ms)
+  ulid ...
+    should return correct length ... ok (0ms)
+    should return expected encoded time component result ... ok (0ms)
+  ulid ... ok (0ms)
+  monotonicity ...
+    without seedTime ...
+      first call ... ok (0ms)
+      second call ... ok (0ms)
+      third call ... ok (0ms)
+      fourth call ... ok (0ms)
+    without seedTime ... ok (1ms)
+    with seedTime ...
+      first call ... ok (0ms)
+      second call with the same ... ok (0ms)
+      third call with less than ... ok (0ms)
+      fourth call with even more less than ... ok (0ms)
+      fifth call with 1 greater than ... ok (0ms)
+    with seedTime ... ok (2ms)
+  monotonicity ... ok (5ms)
+ulid ... ok (181ms)
+
+ok | 1 passed (45 steps) | 0 failed (183ms)
+```
